@@ -1,4 +1,10 @@
 .DS_Store
 node_modules/
-.env
+.env*
 *.log
+*secret*
+*credential*
+*.pem
+*.key
+!railway.json
+# NEVER commit API keys — use Railway environment variables

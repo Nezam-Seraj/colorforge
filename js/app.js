@@ -149,11 +149,8 @@ window.app = {
 
   // Settings screen Replicate binder
   saveSettings() {
-    const geminiVal = document.getElementById('gemini-api-input').value.trim();
     const replicateVal = document.getElementById('replicate-api-input').value.trim();
-    this.saveToStorage('gemini_token', geminiVal);
     this.saveToStorage('replicate_token', replicateVal);
-    AIPipeline.geminiToken = geminiVal || null;
     AIPipeline.replicateToken = replicateVal || null;
     if (window.Studio && window.Studio.triggerHaptic) {
       window.Studio.triggerHaptic();
@@ -162,17 +159,39 @@ window.app = {
   },
 
   loadSettings() {
-    const geminiToken = this.getFromStorage('gemini_token');
     const replicateToken = this.getFromStorage('replicate_token');
-    const geminiInput = document.getElementById('gemini-api-input');
     const replicateInput = document.getElementById('replicate-api-input');
-    if (geminiInput && geminiToken) {
-      geminiInput.value = geminiToken;
-      AIPipeline.geminiToken = geminiToken;
-    }
     if (replicateInput && replicateToken) {
       replicateInput.value = replicateToken;
       AIPipeline.replicateToken = replicateToken;
+    }
+    // Check Gemini server status
+    this.checkGeminiStatus();
+  },
+
+  async checkGeminiStatus() {
+    const el = document.getElementById('gemini-status');
+    if (!el) return;
+    try {
+      const resp = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: 'test', style: 'mandala', complexity: 'simple' }),
+        signal: AbortSignal.timeout(5000),
+      });
+      const data = await resp.json();
+      if (resp.ok && data.image) {
+        el.innerHTML = '<span style="color:var(--success)">\u2713 Connected</span> — Gemini 2.0 Flash ready';
+        el.style.borderColor = 'var(--success)';
+      } else if (resp.status === 503) {
+        el.innerHTML = '<span style="color:var(--danger)">\u2717 Not configured</span> — add GEMINI_API_KEY to Railway';
+        el.style.borderColor = 'var(--danger)';
+      } else {
+        el.innerHTML = '<span style="color:var(--accent-warm)">\u26A0 Unknown status</span>';
+        el.style.borderColor = 'var(--accent-warm)';
+      }
+    } catch(e) {
+      el.innerHTML = '<span style="color:var(--text-muted)">\u2014 Checking on next generation</span>';
     }
   },
 
