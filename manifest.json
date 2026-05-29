@@ -2,7 +2,7 @@
   "name": "ColorForge — AI Coloring Studio",
   "short_name": "ColorForge",
   "description": "Describe it. AI draws it. You color it. Infinite coloring pages for adults.",
-  "start_url": "./",
+  "start_url": ".",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#faf6f0",
@@ -10,13 +10,13 @@
   "categories": ["entertainment", "lifestyle", "creativity"],
   "icons": [
     {
-      "src": "./assets/icon-192.png",
+      "src": "assets/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "./assets/icon-512.png",
+      "src": "assets/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
