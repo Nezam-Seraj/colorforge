@@ -14,7 +14,7 @@ import ssl
 
 PORT = int(os.environ.get('PORT', 3000))
 HOST = '0.0.0.0'
-GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', '')
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY') or os.environ.get('GOOGLE_API_KEY') or os.environ.get('GEMINI_API') or ''
 GEMINI_MODEL = 'gemini-2.0-flash'
 GEMINI_URL = f'https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent'
 
