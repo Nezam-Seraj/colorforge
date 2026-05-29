@@ -61,6 +61,7 @@ window.Gallery = {
           <button class="btn-primary" onclick="app.navigate('create')">Create One Now</button>
         </div>
       `;
+      lucide.createIcons();
       return;
     }
 
@@ -79,6 +80,7 @@ window.Gallery = {
         this.render(btn.dataset.filter);
       });
     });
+    lucide.createIcons();
   },
 
   openPage(id) {

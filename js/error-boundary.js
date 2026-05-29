@@ -32,6 +32,7 @@ window.ErrorBoundary = {
       </div>
     `;
     document.body.appendChild(overlay);
+    lucide.createIcons();
   },
 
   recover() {

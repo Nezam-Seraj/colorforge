@@ -259,16 +259,8 @@
 <script type="module" src="js/payments.js"></script>
 <script type="module" src="js/kids-mode.js"></script>
 <script defer>
-  // Initialize Lucide on page load and after any DOM mutations
+  // Initialize Lucide on page load
   lucide.createIcons();
-  // Watch for dynamic content
-  let _iconsUpdating = false;
-  new MutationObserver(() => {
-    if (_iconsUpdating) return;
-    _iconsUpdating = true;
-    lucide.createIcons();
-    _iconsUpdating = false;
-  }).observe(document.body, {childList:true,subtree:true});
 </script>
 </body>
 </html>

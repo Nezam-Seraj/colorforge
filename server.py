@@ -16,5 +16,5 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         print(f"[{self.log_date_time_string()}] {args[0]}")
 
 print(f"ColorForge serving on {HOST}:{PORT}")
-with socketserver.TCPServer((HOST, PORT), Handler) as httpd:
+with socketserver.ThreadingTCPServer((HOST, PORT), Handler) as httpd:
     httpd.serve_forever()
