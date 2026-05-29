@@ -15,7 +15,7 @@ import ssl
 PORT = int(os.environ.get('PORT', 3000))
 HOST = '0.0.0.0'
 GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', '')
-GEMINI_MODEL = 'gemini-2.0-flash-exp-image-generation'
+GEMINI_MODEL = 'gemini-2.0-flash'
 GEMINI_URL = f'https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:generateContent'
 
 STYLE_PROMPTS = {
@@ -98,7 +98,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             'contents': [{'parts': [{'text': full_prompt}]}],
             'systemInstruction': {'parts': [{'text': SYSTEM_INSTRUCTION}]},
             'generationConfig': {
-                'responseModalities': ['image', 'text'],
+                'responseModalities': ['TEXT', 'IMAGE'],
                 'temperature': 0.4,
             }
         }).encode('utf-8')
