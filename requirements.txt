@@ -1,2 +1,0 @@
-# ColorForge — static PWA, no Python deps needed
-# This file just signals nixpacks to install Python
