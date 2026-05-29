@@ -1,0 +1,49 @@
+{
+  "name": "ColorForge — AI Coloring Studio",
+  "short_name": "ColorForge",
+  "description": "Describe it. AI draws it. You color it. Infinite coloring pages for adults.",
+  "start_url": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#faf6f0",
+  "theme_color": "#5c4a3a",
+  "categories": ["entertainment", "lifestyle", "creativity"],
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "assets/screenshot-1.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Discover screen with mood picker and trending styles"
+    },
+    {
+      "src": "assets/screenshot-2.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "AI generation with style and complexity controls"
+    }
+  ],
+  "prefer_related_applications": true,
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.colorforge.app",
+      "id": "com.colorforge.app"
+    }
+  ]
+}
