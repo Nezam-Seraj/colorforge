@@ -1,20 +1,20 @@
 // === ColorForge — Service Worker ===
 const CACHE_NAME = 'colorforge-v2';
 const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/style.css',
-  '/manifest.json',
-  '/js/lucide.min.js',
-  '/js/app.js',
-  '/js/studio.js',
-  '/js/ai-pipeline.js',
-  '/js/gallery.js',
-  '/js/discover.js',
-  '/js/payments.js',
-  '/js/kids-mode.js',
-  '/assets/icon-192.png',
-  '/assets/icon-512.png',
+  './',
+  './index.html',
+  './style.css',
+  './manifest.json',
+  './js/lucide.min.js',
+  './js/app.js',
+  './js/studio.js',
+  './js/ai-pipeline.js',
+  './js/gallery.js',
+  './js/discover.js',
+  './js/payments.js',
+  './js/kids-mode.js',
+  './assets/icon-192.png',
+  './assets/icon-512.png',
 ];
 
 // Install — cache all core assets
