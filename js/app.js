@@ -149,21 +149,30 @@ window.app = {
 
   // Settings screen Replicate binder
   saveSettings() {
-    const inputVal = document.getElementById('replicate-api-input').value.trim();
-    this.saveToStorage('replicate_token', inputVal);
-    AIPipeline.setToken(inputVal);
+    const geminiVal = document.getElementById('gemini-api-input').value.trim();
+    const replicateVal = document.getElementById('replicate-api-input').value.trim();
+    this.saveToStorage('gemini_token', geminiVal);
+    this.saveToStorage('replicate_token', replicateVal);
+    AIPipeline.geminiToken = geminiVal || null;
+    AIPipeline.replicateToken = replicateVal || null;
     if (window.Studio && window.Studio.triggerHaptic) {
       window.Studio.triggerHaptic();
     }
-    this.toast('Settings saved successfully!');
+    this.toast('Settings saved!');
   },
 
   loadSettings() {
-    const savedToken = this.getFromStorage('replicate_token');
-    const input = document.getElementById('replicate-api-input');
-    if (input && savedToken) {
-      input.value = savedToken;
-      AIPipeline.setToken(savedToken);
+    const geminiToken = this.getFromStorage('gemini_token');
+    const replicateToken = this.getFromStorage('replicate_token');
+    const geminiInput = document.getElementById('gemini-api-input');
+    const replicateInput = document.getElementById('replicate-api-input');
+    if (geminiInput && geminiToken) {
+      geminiInput.value = geminiToken;
+      AIPipeline.geminiToken = geminiToken;
+    }
+    if (replicateInput && replicateToken) {
+      replicateInput.value = replicateToken;
+      AIPipeline.replicateToken = replicateToken;
     }
   },
 

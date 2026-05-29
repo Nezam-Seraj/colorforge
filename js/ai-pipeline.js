@@ -1,22 +1,102 @@
 // === ColorForge — AI Generation Pipeline ===
-// Uses Replicate API for SDXL + ControlNet coloring page generation
-// Fallback: procedural generation when offline
+// Primary: Gemini 2.0 Flash (native image gen, free tier)
+// Secondary: Replicate SDXL (higher quality)
+// Fallback: procedural generation
 
 window.AIPipeline = {
-  replicateToken: null, // Initialized below from localStorage
-  useReplicate: false,
-  generationTimeout: 30000,
+  geminiToken: null,
+  replicateToken: null,
+  generationTimeout: 60000,
 
   async generate(prompt, style, complexity) {
-    // Try Replicate first, fall back to procedural
-    try {
-      if (this.replicateToken) {
-        return await this.generateViaReplicate(prompt, style, complexity);
-      }
-    } catch (e) {
-      console.warn('Replicate generation failed, using procedural fallback:', e);
+    // 1. Try Gemini first (free tier, fast)
+    if (this.geminiToken) {
+      try { return await this.generateViaGemini(prompt, style, complexity); }
+      catch (e) { console.warn('Gemini failed, trying next:', e.message); }
     }
+    // 2. Try Replicate
+    if (this.replicateToken) {
+      try { return await this.generateViaReplicate(prompt, style, complexity); }
+      catch (e) { console.warn('Replicate failed, using fallback:', e.message); }
+    }
+    // 3. Procedural fallback
     return await this.generateProcedural(prompt, style, complexity);
+  },
+
+  async generateViaGemini(prompt, style, complexity) {
+    const stylePrompts = {
+      mandala: 'symmetrical mandala pattern, geometric precision, sacred geometry',
+      botanical: 'detailed botanical illustration, leaves and flowers, natural forms',
+      geometric: 'geometric abstract pattern, clean lines, mathematical precision',
+      fantasy: 'fantasy illustration, mythical creatures, magical atmosphere',
+      zen: 'zen meditation art, flowing lines, peaceful minimal design',
+      animals: 'animal portrait, detailed fur and features, natural pose',
+      architecture: 'architectural drawing, buildings and structures, detailed',
+      abstract: 'abstract art pattern, flowing curves and shapes, artistic',
+      food: 'food illustration, appetizing details, culinary art',
+      space: 'space scene, planets and stars, cosmic wonder',
+    };
+
+    const complexityMap = {
+      simple: 'simple outlines, large open spaces, minimal details',
+      medium: 'moderate detail, balanced composition, clear sections',
+      intricate: 'highly detailed, intricate patterns, many small sections, fine lines',
+    };
+
+    const systemInstruction = `You are a coloring book artist. Generate ONLY black and white line art suitable for coloring. Rules:
+- Pure black lines on pure white background
+- NO color, NO shading, NO grayscale, NO fills
+- Thick, bold outlines around major shapes
+- Thinner lines for internal details
+- Clean, crisp vector-art style
+- All shapes must be fully enclosed (closed paths) so they can be bucket-filled
+- Output as a single image with no text overlay`;
+
+    const fullPrompt = [
+      'coloring book page',
+      'black and white line art only',
+      'thick bold outlines, no shading, no color',
+      'clean white background',
+      stylePrompts[style] || style,
+      complexityMap[complexity] || 'moderate detail',
+      prompt,
+    ].join('. ');
+
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp-image-generation:generateContent?key=${this.geminiToken}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{
+            parts: [{ text: fullPrompt }]
+          }],
+          systemInstruction: {
+            parts: [{ text: systemInstruction }]
+          },
+          generationConfig: {
+            responseModalities: ['image', 'text'],
+            temperature: 0.4,
+          }
+        }),
+        signal: AbortSignal.timeout(this.generationTimeout),
+      }
+    );
+
+    if (!response.ok) {
+      const err = await response.text();
+      throw new Error(`Gemini API error ${response.status}: ${err}`);
+    }
+
+    const data = await response.json();
+    
+    // Extract image from response
+    for (const part of data.candidates?.[0]?.content?.parts || []) {
+      if (part.inlineData?.data) {
+        return `data:${part.inlineData.mimeType || 'image/png'};base64,${part.inlineData.data}`;
+      }
+    }
+    throw new Error('No image in Gemini response');
   },
 
   async generateViaReplicate(prompt, style, complexity) {
@@ -1501,14 +1581,21 @@ window.AIPipeline = {
 
   setToken(token) {
     this.replicateToken = token;
-    this.useReplicate = !!token;
+  },
+
+  setGeminiToken(token) {
+    this.geminiToken = token;
   },
 };
 
 // Auto-initialize from localStorage
 (function() {
-  const token = localStorage.getItem('colorforge_replicate_token');
-  if (token) {
-    window.AIPipeline.setToken(JSON.parse(token));
-  }
+  try {
+    const geminiToken = JSON.parse(localStorage.getItem('colorforge_gemini_token'));
+    if (geminiToken) window.AIPipeline.geminiToken = geminiToken;
+  } catch(e) {}
+  try {
+    const replicateToken = JSON.parse(localStorage.getItem('colorforge_replicate_token'));
+    if (replicateToken) window.AIPipeline.replicateToken = replicateToken;
+  } catch(e) {}
 })();

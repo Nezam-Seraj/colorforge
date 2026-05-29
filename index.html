@@ -187,11 +187,18 @@
         <h2><i data-lucide="settings"></i> Settings</h2>
         <div class="create-form">
           <div class="input-group">
-            <label for="replicate-api-input">Replicate API Token</label>
+            <label for="gemini-api-input">Gemini API Key <span style="color:var(--accent-warm);font-size:0.75rem">(recommended)</span></label>
+            <div class="prompt-wrapper">
+              <input type="password" id="gemini-api-input" placeholder="Paste your AIza... key from Google AI Studio" style="width: 100%; padding: 14px 16px; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text-primary); font-family: var(--font);">
+            </div>
+            <p class="subtitle" style="font-size: 0.75rem; margin-top: 6px; margin-bottom: 0;">Free tier: 1,500 requests/day. Get key at <a href="https://aistudio.google.com/apikey" target="_blank" style="color:var(--accent)">aistudio.google.com</a></p>
+          </div>
+          <div class="input-group">
+            <label for="replicate-api-input">Replicate API Token <span style="color:var(--text-muted);font-size:0.75rem">(optional, higher quality)</span></label>
             <div class="prompt-wrapper">
               <input type="password" id="replicate-api-input" placeholder="Paste your r8_... token here" style="width: 100%; padding: 14px 16px; background: var(--bg-input); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text-primary); font-family: var(--font);">
             </div>
-            <p class="subtitle" style="font-size: 0.75rem; margin-top: 6px; margin-bottom: 0;">Required for high-definition SDXL generating. Persisted locally.</p>
+            <p class="subtitle" style="font-size: 0.75rem; margin-top: 6px; margin-bottom: 0;">SDXL quality. ~$0.002/image after free credits.</p>
           </div>
           <button class="btn-primary" id="btn-save-settings" onclick="app.saveSettings()"><i data-lucide="save"></i> Save Settings</button>
           <hr style="border: 0; border-top: 1px solid var(--border); margin: 10px 0;">
