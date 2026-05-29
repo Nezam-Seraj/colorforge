@@ -1,10 +1,11 @@
 // === ColorForge — Service Worker ===
-const CACHE_NAME = 'colorforge-v1';
+const CACHE_NAME = 'colorforge-v2';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
   '/style.css',
   '/manifest.json',
+  '/js/lucide.min.js',
   '/js/app.js',
   '/js/studio.js',
   '/js/ai-pipeline.js',
