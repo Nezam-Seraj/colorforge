@@ -219,6 +219,15 @@ window.app = {
   async checkGeminiStatus() {
     const el = document.getElementById('gemini-status');
     if (!el) return;
+
+    // Proactively check if client-side API key bypass is set
+    const clientKey = this.getFromStorage('gemini_token');
+    if (clientKey) {
+      el.innerHTML = '<span style="color:var(--success)">\u2713 Connected (Client Bypass)</span> — direct browser API active';
+      el.style.borderColor = 'var(--success)';
+      return;
+    }
+
     try {
       const resp = await fetch('/api/generate', {
         method: 'POST',

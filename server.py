@@ -66,10 +66,22 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_error(404)
 
     def handle_generate(self):
-        api_key = (os.environ.get('GEMINI_API_KEY') or os.environ.get('GOOGLE_API_KEY') or os.environ.get('GEMINI_API') or '').strip()
+        api_key = (
+            os.environ.get('GEMINI_API_KEY') or 
+            os.environ.get('GOOGLE_API_KEY') or 
+            os.environ.get('GEMINI_API') or
+            os.environ.get('gemini_api_key') or
+            os.environ.get('google_api_key') or
+            ''
+        ).strip()
         if not api_key:
+            print("[Gemini] Connection status: Not configured (missing environment variable)")
             self.send_json(503, {'error': 'Gemini API key not configured'})
             return
+
+        # Log masked key to Railway console for safe validation
+        masked = f"{api_key[:6]}...{api_key[-4:]}" if len(api_key) > 10 else "***"
+        print(f"[Gemini] Request received. Using environment key: {masked}")
 
         try:
             length = int(self.headers.get('Content-Length', 0))
