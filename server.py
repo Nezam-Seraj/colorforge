@@ -118,11 +118,23 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         except urllib.error.HTTPError as e:
             err_body = e.read().decode('utf-8', errors='replace')
             print(f'Gemini API error {e.code}: {err_body[:500]}')
-            self.send_json(502, {'error': f'Gemini API error: {e.code}'})
+            try:
+                err_json = json.loads(err_body)
+                error_msg = err_json.get('error', {}).get('message', '')
+            except Exception:
+                error_msg = ''
+            
+            display_msg = f"Gemini API error {e.code}"
+            if error_msg:
+                display_msg += f": {error_msg}"
+            else:
+                display_msg += f" — {err_body[:100]}"
+                
+            self.send_json(502, {'error': display_msg})
             return
         except Exception as e:
             print(f'Gemini request failed: {e}')
-            self.send_json(502, {'error': 'Image generation failed'})
+            self.send_json(502, {'error': f'Request failed: {str(e)}'})
             return
 
         # Extract image from response
