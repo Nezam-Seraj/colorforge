@@ -17,6 +17,10 @@ window.AIPipeline = {
       try { return await this.generateViaReplicate(prompt, style, complexity); }
       catch (e) { console.warn('Replicate failed, using fallback:', e.message); }
     }
+    // Notify user of fallback
+    if (window.app && typeof window.app.toast === 'function') {
+      window.app.toast('⚠️ AI Offline (no API key). Using offline procedural drawing.');
+    }
     // 3. Procedural fallback
     return await this.generateProcedural(prompt, style, complexity);
   },

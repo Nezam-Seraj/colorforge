@@ -1,5 +1,5 @@
 // === ColorForge — Service Worker ===
-const CACHE_NAME = 'colorforge-v3';
+const CACHE_NAME = 'colorforge-v4';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',

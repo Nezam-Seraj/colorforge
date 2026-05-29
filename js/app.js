@@ -30,7 +30,27 @@ window.app = {
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('sw.js')
-          .then(reg => console.log('Service Worker registered successfully:', reg.scope))
+          .then(reg => {
+            console.log('Service Worker registered successfully:', reg.scope);
+            reg.onupdatefound = () => {
+              const installingWorker = reg.installing;
+              if (installingWorker) {
+                installingWorker.onstatechange = () => {
+                  if (installingWorker.state === 'installed') {
+                    if (navigator.serviceWorker.controller) {
+                      console.log('New update installed. Reloading...');
+                      if (typeof this.toast === 'function') {
+                        this.toast('✨ App updated! Reloading to apply changes...');
+                      }
+                      setTimeout(() => {
+                        window.location.reload();
+                      }, 1200);
+                    }
+                  }
+                };
+              }
+            };
+          })
           .catch(err => console.error('Service Worker registration failed:', err));
       });
     }

@@ -16,7 +16,12 @@
 <body>
 <div id="app">
   <nav id="navbar">
-    <div class="nav-brand"><i data-lucide="palette"></i> ColorForge</div>
+    <div class="nav-header">
+      <div class="nav-brand"><i data-lucide="palette"></i> ColorForge</div>
+      <button class="btn-settings-icon" onclick="app.navigate('settings')" aria-label="Settings" title="Settings">
+        <i data-lucide="settings"></i>
+      </button>
+    </div>
     <div class="nav-tabs">
       <button class="nav-tab active" data-screen="discover"><i data-lucide="compass"></i> Discover</button>
       <button class="nav-tab" data-screen="create"><i data-lucide="sparkles"></i> Create</button>
