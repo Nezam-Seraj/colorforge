@@ -5,6 +5,7 @@
 
 window.AIPipeline = {
   replicateToken: null,
+  geminiToken: null,
   generationTimeout: 60000,
 
   async generate(prompt, style, complexity) {
@@ -21,6 +22,69 @@ window.AIPipeline = {
   },
 
   async generateViaGemini(prompt, style, complexity) {
+    // Client-side direct bypass (runs 100% in browser, avoids server-side proxy completely)
+    if (this.geminiToken) {
+      const stylePrompts = {
+        mandala: 'symmetrical mandala pattern, geometric precision, sacred geometry',
+        botanical: 'detailed botanical illustration, leaves and flowers, natural forms',
+        geometric: 'geometric abstract pattern, clean lines, mathematical precision',
+        fantasy: 'fantasy illustration, mythical creatures, magical atmosphere',
+        zen: 'zen meditation art, flowing lines, peaceful minimal design',
+        animals: 'animal portrait, detailed fur and features, natural pose',
+        architecture: 'architectural drawing, buildings and structures, detailed',
+        abstract: 'abstract art pattern, flowing curves and shapes, artistic',
+        food: 'food illustration, appetizing details, culinary art',
+        space: 'space scene, planets and stars, cosmic wonder',
+      };
+      const complexityPrompts = {
+        simple: 'simple outlines, large open spaces, easy to color, minimal details',
+        medium: 'moderate detail, balanced composition, clear sections',
+        intricate: 'highly detailed, intricate patterns, many small sections, fine lines',
+      };
+      const fullPrompt = [
+        'coloring book page',
+        'clean black and white line art',
+        'thick bold outlines',
+        'no shading, no grayscale',
+        'white background',
+        stylePrompts[style] || style,
+        complexityPrompts[complexity] || 'moderate detail',
+        prompt,
+      ].join(', ');
+
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${this.geminiToken}`;
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{'parts': [{'text': fullPrompt}]}],
+          systemInstruction: {
+            parts: [{
+              text: 'You are a coloring book artist. Generate ONLY black and white line art suitable for coloring. Rules:\n- Pure black lines on pure white background\n- NO color, NO shading, NO grayscale, NO fills\n- Thick, bold outlines around major shapes\n- Thinner lines for internal details\n- Clean, crisp vector-art style\n- All shapes must be fully enclosed (closed paths) so they can be bucket-filled\n- Output as a single image with no text overlay'
+            }]
+          },
+          generationConfig: {
+            responseModalities: ['TEXT', 'IMAGE'],
+            temperature: 0.4,
+          }
+        }),
+        signal: AbortSignal.timeout(this.generationTimeout),
+      });
+
+      if (!response.ok) {
+        const err = await response.json().catch(() => ({ error: { message: 'Unknown error' } }));
+        throw new Error(err.error?.message || `Google API error ${response.status}`);
+      }
+
+      const data = await response.json();
+      for (const part of data.candidates?.[0]?.content?.parts || []) {
+        if (part.inlineData?.data) {
+          return `data:${part.inlineData.mimeType || 'image/png'};base64,${part.inlineData.data}`;
+        }
+      }
+      throw new Error('No image returned from Google direct call');
+    }
+
     // Call our secure server-side proxy — API key never touches the browser
     const response = await fetch('/api/generate', {
       method: 'POST',

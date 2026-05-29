@@ -166,10 +166,16 @@ window.app = {
     const replicateVal = document.getElementById('replicate-api-input').value.trim();
     this.saveToStorage('replicate_token', replicateVal);
     AIPipeline.replicateToken = replicateVal || null;
+
+    const geminiVal = document.getElementById('gemini-api-input').value.trim();
+    this.saveToStorage('gemini_token', geminiVal);
+    AIPipeline.geminiToken = geminiVal || null;
+
     if (window.Studio && window.Studio.triggerHaptic) {
       window.Studio.triggerHaptic();
     }
     this.toast('Settings saved!');
+    this.checkGeminiStatus();
   },
 
   loadSettings() {
@@ -178,6 +184,13 @@ window.app = {
     if (replicateInput && replicateToken) {
       replicateInput.value = replicateToken;
       AIPipeline.replicateToken = replicateToken;
+    }
+
+    const geminiToken = this.getFromStorage('gemini_token');
+    const geminiInput = document.getElementById('gemini-api-input');
+    if (geminiInput && geminiToken) {
+      geminiInput.value = geminiToken;
+      AIPipeline.geminiToken = geminiToken;
     }
     // Check Gemini server status
     this.checkGeminiStatus();
