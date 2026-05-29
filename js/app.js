@@ -468,17 +468,17 @@ window.app = {
     }
     setTimeout(() => {
       const styles = [
-        { icon: 'circle', name: 'Mandala', count: '2.4k pages' },
-        { icon: 'sword', name: 'Fantasy', count: '1.8k pages' },
-        { icon: 'leaf', name: 'Botanical', count: '1.5k pages' },
-        { icon: 'orbit', name: 'Abstract', count: '1.2k pages' },
-        { icon: 'shapes', name: 'Geometric', count: '980 pages' },
-        { icon: 'flower-2', name: 'Zen Garden', count: '820 pages' },
+        { icon: 'circle', name: 'Mandala', count: '2.4k colored' },
+        { icon: 'sword', name: 'Fantasy', count: '1.8k colored' },
+        { icon: 'leaf', name: 'Botanical', count: '1.5k colored' },
+        { icon: 'orbit', name: 'Abstract', count: '1.2k colored' },
+        { icon: 'shapes', name: 'Geometric', count: '980 colored' },
+        { icon: 'flower-2', name: 'Zen Garden', count: '820 colored' },
       ];
       container.innerHTML = styles.map(s => `
         <div class="style-card" onclick="document.getElementById('prompt-input').value='${s.name.toLowerCase()} coloring page'; app.navigate('create')">
           <div class="style-icon"><i data-lucide="${s.icon}"></i></div>
-          <div class="style-name">${s.name}</div>
+          <div class="style-label">${s.name}</div>
           <div class="style-count">${s.count}</div>
         </div>
       `).join('');

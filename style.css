@@ -219,7 +219,7 @@ h1 { font-weight: 400; }
 }
 .style-card:hover { border-color: var(--accent-warm); transform: translateY(-2px); box-shadow: var(--shadow); }
 .style-card .style-icon { font-size: 2rem; margin-bottom: 8px; }
-.style-card .style-name { font-size: 0.9rem; font-weight: 600; }
+.style-card .style-label { font-size: 0.9rem; font-weight: 600; color: var(--accent); }
 .style-card .style-count { font-size: 0.75rem; color: var(--text-muted); }
 
 /* === Create === */
