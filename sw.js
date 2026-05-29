@@ -37,9 +37,18 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch — cache-first for assets, network-first for API calls
+// Fetch — network-first for HTML, stale-while-revalidate for JS/CSS/Assets
 self.addEventListener('fetch', (event) => {
   const url = new URL(event.request.url);
+
+  // Only handle HTTP/HTTPS protocols (ignores chrome-extensions, etc.)
+  if (!url.protocol.startsWith('http')) return;
+
+  // HTML documents — network first (so updates are live immediately)
+  if (event.request.mode === 'navigate' || url.pathname.endsWith('.html') || url.pathname === '/') {
+    event.respondWith(networkFirst(event.request));
+    return;
+  }
 
   // API calls — network first
   if (url.pathname.includes('/api/') || url.hostname === 'api.replicate.com') {
@@ -47,25 +56,24 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Assets — cache first
-  event.respondWith(cacheFirst(event.request));
+  // Static Assets — stale while revalidate
+  event.respondWith(staleWhileRevalidate(event.request));
 });
 
-async function cacheFirst(request) {
-  const cached = await caches.match(request);
-  if (cached) return cached;
+async function staleWhileRevalidate(request) {
+  const cache = await caches.open(CACHE_NAME);
+  const cachedResponse = await cache.match(request);
 
-  try {
-    const response = await fetch(request);
-    if (response.ok) {
-      const cache = await caches.open(CACHE_NAME);
-      cache.put(request, response.clone());
+  const fetchPromise = fetch(request).then((networkResponse) => {
+    if (networkResponse.ok) {
+      cache.put(request, networkResponse.clone());
     }
-    return response;
-  } catch (e) {
-    // Offline fallback
-    return caches.match('./index.html');
-  }
+    return networkResponse;
+  }).catch(() => {
+    // Fail silently, network response will fail
+  });
+
+  return cachedResponse || fetchPromise;
 }
 
 async function networkFirst(request) {
@@ -78,7 +86,14 @@ async function networkFirst(request) {
     return response;
   } catch (e) {
     const cached = await caches.match(request);
-    return cached || new Response(JSON.stringify({ error: 'offline' }), {
+    if (cached) return cached;
+    
+    // If offline fallback is needed
+    if (request.mode === 'navigate') {
+      return caches.match('./index.html');
+    }
+    
+    return new Response(JSON.stringify({ error: 'offline' }), {
       status: 503,
       headers: { 'Content-Type': 'application/json' }
     });
