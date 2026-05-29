@@ -65,6 +65,7 @@ h1 { font-weight: 400; }
   max-width: 480px;
   margin: 0 auto;
   position: relative;
+  overflow: hidden;
 }
 
 /* === Navigation === */
@@ -120,7 +121,7 @@ h1 { font-weight: 400; }
   width: 100%;
   height: 100%;
   transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow-x: hidden;
+  overflow: visible;
   position: relative;
   transform: translateX(var(--slide-translate, 0%));
 }
