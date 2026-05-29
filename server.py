@@ -66,7 +66,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             self.send_error(404)
 
     def handle_generate(self):
-        if not GEMINI_API_KEY:
+        api_key = (os.environ.get('GEMINI_API_KEY') or os.environ.get('GOOGLE_API_KEY') or os.environ.get('GEMINI_API') or '').strip()
+        if not api_key:
             self.send_json(503, {'error': 'Gemini API key not configured'})
             return
 
@@ -103,7 +104,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             }
         }).encode('utf-8')
 
-        url = f'{GEMINI_URL}?key={GEMINI_API_KEY}'
+        url = f'{GEMINI_URL}?key={api_key}'
         req = urllib.request.Request(
             url,
             data=payload,
