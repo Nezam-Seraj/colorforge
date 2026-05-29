@@ -19,20 +19,28 @@ window.KidsMode = {
     return answer === this.questionAnswer;
   },
 
-  activate() {
+  activate(suppressToast = false) {
     this.active = true;
     localStorage.setItem('colorforge_kidsMode', 'true');
     this.applyKidsTheme();
     this.hideAdultFeatures();
     this.loadPreGeneratedPacks();
-    app.toast('Kids Mode active! Safe coloring environment.');
+    
+    const toggle = document.getElementById('kids-toggle');
+    if (toggle) {
+      toggle.innerHTML = '<i data-lucide="log-out"></i> Exit Kids Mode';
+      lucide.createIcons();
+    }
+    
+    if (!suppressToast) {
+      app.toast('Kids Mode active! Safe coloring environment.');
+    }
   },
 
   deactivate() {
     this.active = false;
     localStorage.removeItem('colorforge_kidsMode');
-    this.restoreAdultTheme();
-    app.navigate('discover');
+    window.location.reload();
   },
 
   applyKidsTheme() {

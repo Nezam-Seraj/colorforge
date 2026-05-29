@@ -125,7 +125,7 @@ h1 { font-weight: 400; }
   transform: translateX(var(--slide-translate, 0%));
 }
 .screen {
-  display: block !important;
+  display: block;
   width: 100%;
   flex-shrink: 0;
   height: 100%;

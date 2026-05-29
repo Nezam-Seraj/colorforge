@@ -20,6 +20,9 @@ window.app = {
     this.setupKidsToggle();
     this.loadSettings();
     if (this.getFromStorage('isPro')) this.upgradeToPro();
+    if (localStorage.getItem('colorforge_kidsMode') === 'true') {
+      KidsMode.activate(true);
+    }
     this.registerServiceWorker();
   },
 
@@ -38,6 +41,17 @@ window.app = {
     document.querySelectorAll('.nav-tab').forEach(tab => {
       tab.addEventListener('click', () => this.navigate(tab.dataset.screen));
     });
+
+    // Horizontal mouse wheel scrolling for navbar tabs (especially useful on desktop)
+    const navTabs = document.querySelector('.nav-tabs');
+    if (navTabs) {
+      navTabs.addEventListener('wheel', (e) => {
+        if (e.deltaY !== 0) {
+          e.preventDefault();
+          navTabs.scrollLeft += e.deltaY;
+        }
+      }, { passive: false });
+    }
   },
 
   navigate(screen) {
@@ -426,7 +440,7 @@ window.app = {
   // Kids Mode
   setupKidsToggle() {
     const toggle = document.getElementById('kids-toggle');
-    if (toggle) toggle.style.display = 'block';
+    if (toggle) toggle.style.display = 'inline-flex';
   },
 
   toggleKidsGate() {
@@ -441,8 +455,13 @@ window.app = {
   unlockKidsMode() {
     if (KidsMode.validateAnswer()) {
       document.getElementById('screen-kids-gate').classList.remove('active');
-      KidsMode.activate();
-      this.toast('Kids Mode activated!');
+      if (KidsMode.active) {
+        KidsMode.deactivate();
+        this.toast('Kids Mode deactivated!');
+      } else {
+        KidsMode.activate();
+        this.toast('Kids Mode activated!');
+      }
     } else {
       this.toast('Wrong answer. Try again.');
     }
