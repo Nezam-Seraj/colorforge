@@ -22,12 +22,12 @@ window.ErrorBoundary = {
     overlay.id = 'error-overlay';
     overlay.innerHTML = `
       <div class="error-dialog">
-        <div class="error-icon">⚠️</div>
+        <div class="error-icon"><i data-lucide="alert-triangle"></i></div>
         <h2>Oops! Something went wrong</h2>
         <p class="error-msg">${this.sanitize(message)}</p>
         <div class="error-actions">
-          <button class="btn btn-primary" onclick="ErrorBoundary.recover()">🔄 Try Again</button>
-          <button class="btn btn-secondary" onclick="ErrorBoundary.goHome()">🏠 Go Home</button>
+          <button class="btn btn-primary" onclick="ErrorBoundary.recover()">Try Again</button>
+          <button class="btn btn-secondary" onclick="ErrorBoundary.goHome()">Go Home</button>
         </div>
       </div>
     `;

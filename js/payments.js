@@ -45,7 +45,7 @@ window.Payments = {
       console.log('[Payments] Purchase successful:', result);
 
       // Show confirmation
-      app.toast('Purchase successful! Welcome to Pro 🎉');
+      app.toast('Purchase successful! Welcome to Pro');
       app.navigate('discover');
     } else {
       app.toast('Purchase failed. Please try again.');
@@ -72,7 +72,7 @@ window.Payments = {
   purchasePack(packId) {
     if (app.isPro) {
       // Pro users get packs included
-      app.toast('Style pack unlocked! 🎉');
+      app.toast('Style pack unlocked!');
       return;
     }
     this.launchGooglePlayBilling(`pack_${packId}`);

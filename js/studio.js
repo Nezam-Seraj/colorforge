@@ -62,7 +62,7 @@ window.Studio = {
 
     const globalBtn = document.getElementById('btn-global');
     if (globalBtn) {
-      globalBtn.textContent = `🌐 Global: ${this.globalFillMode ? 'On' : 'Off'}`;
+      globalBtn.textContent = `Global: ${this.globalFillMode ? 'On' : 'Off'}`;
       globalBtn.classList.toggle('active', this.globalFillMode);
     }
 
@@ -401,7 +401,7 @@ window.Studio = {
     this.globalFillMode = !this.globalFillMode;
     this.updateToolButtonsUI();
     this.triggerHaptic();
-    this.toast(`Global Fill ${this.globalFillMode ? 'Enabled 🌐' : 'Disabled 🪣'}`);
+    this.toast(`Global Fill ${this.globalFillMode ? 'Enabled' : 'Disabled'}`);
   },
 
   // Undo/Redo
@@ -492,7 +492,7 @@ window.Studio = {
     link.download = `colorforge-${Date.now()}.png`;
     link.href = this.canvas.toDataURL('image/png');
     link.click();
-    this.toast('Exported as PNG! 📤');
+    this.toast('Exported as PNG!');
   },
 
   getImageData() {

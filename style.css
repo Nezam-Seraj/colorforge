@@ -1,26 +1,31 @@
-/* === ColorForge — Design System === */
+/* === ColorForge — Warm Paper Design System === */
 :root {
-  --bg-primary: #0f0f1a;
-  --bg-secondary: #1a1a2e;
-  --bg-card: #16213e;
-  --bg-input: #1e1e3a;
-  --accent: #7c3aed;
-  --accent-light: #a78bfa;
-  --accent-glow: rgba(124, 58, 237, 0.3);
-  --gradient-start: #7c3aed;
-  --gradient-end: #ec4899;
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted: #64748b;
-  --border: #2d2d5a;
-  --border-active: #7c3aed;
-  --danger: #ef4444;
-  --success: #22c55e;
+  --bg-primary: #faf6f0;
+  --bg-secondary: #f3ede6;
+  --bg-card: #ffffff;
+  --bg-input: #f5f0ea;
+  --accent: #1e3a5f;
+  --accent-light: #3d6a99;
+  --accent-glow: rgba(30, 58, 95, 0.12);
+  --accent-warm: #c17a53;
+  --accent-warm-light: #d4956e;
+  --gradient-start: #1e3a5f;
+  --gradient-end: #c17a53;
+  --text-primary: #1a1816;
+  --text-secondary: #5c5650;
+  --text-muted: #8c8478;
+  --text-dim: #8c8478;
+  --border: #e0d8ce;
+  --border-active: #1e3a5f;
+  --danger: #c44a3f;
+  --success: #3d7a5c;
   --radius: 12px;
   --radius-sm: 8px;
   --radius-lg: 16px;
-  --shadow: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow: 0 2px 16px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.08);
   --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: Georgia, 'Times New Roman', serif;
   --safe-bottom: env(safe-area-inset-bottom, 16px);
 }
 
@@ -37,6 +42,21 @@ body {
   user-select: none;
   overscroll-behavior: none;
 }
+
+/* Paper texture — subtle grain */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+h1, h2, h3, .nav-brand, .island-title { font-family: var(--font-heading); letter-spacing: -0.01em; }
+h1 { font-weight: 400; }
+.gradient-text { font-weight: 400; }
 
 #app {
   display: flex;
@@ -174,7 +194,8 @@ body {
   background: var(--bg-card);
   border-radius: var(--radius-lg);
   padding: 16px;
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 .challenge-preview canvas { border-radius: var(--radius-sm); max-width: 120px; height: auto; }
 .challenge-info { display: flex; flex-direction: column; gap: 8px; }
@@ -190,12 +211,13 @@ body {
   background: var(--bg-card);
   border-radius: var(--radius);
   padding: 16px;
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.25s;
   text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
-.style-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.style-card:hover { border-color: var(--accent-warm); transform: translateY(-2px); box-shadow: var(--shadow); }
 .style-card .style-icon { font-size: 2rem; margin-bottom: 8px; }
 .style-card .style-name { font-size: 0.9rem; font-weight: 600; }
 .style-card .style-count { font-size: 0.75rem; color: var(--text-muted); }
@@ -262,7 +284,7 @@ body {
   background: var(--accent);
   color: white;
 }
-.btn-primary:hover { background: #6d28d9; transform: translateY(-1px); }
+.btn-primary:hover { background: var(--accent-light); transform: translateY(-1px); }
 .btn-primary:active { transform: scale(0.98); }
 .btn-secondary {
   background: var(--bg-card);
@@ -329,12 +351,13 @@ body {
   aspect-ratio: 3/4;
   border-radius: var(--radius-sm);
   overflow: hidden;
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.25s;
   position: relative;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
-.gallery-item:hover { transform: scale(1.03); border-color: var(--accent); }
+.gallery-item:hover { transform: scale(1.03); border-color: var(--accent-warm); box-shadow: var(--shadow); }
 .gallery-item canvas, .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
 .gallery-item .item-badge {
   position: absolute;
@@ -371,8 +394,8 @@ body {
   position: relative;
 }
 .pro-card.featured {
-  border-color: var(--accent);
-  box-shadow: 0 0 32px var(--accent-glow);
+  border-color: var(--accent-warm);
+  box-shadow: 0 0 32px rgba(193, 122, 83, 0.15);
 }
 .pro-badge {
   position: absolute;
@@ -428,7 +451,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #0a0a16;
+  background: #2c2418;
   touch-action: none;
 }
 #studio-canvas { max-width: 100%; max-height: 100%; cursor: crosshair; image-rendering: auto; }
@@ -552,7 +575,22 @@ body {
   .challenge-preview canvas { max-width: 100%; }
 }
 
-/* ── Error Overlay ───────────────────── */
+/* ── Lucide Icons ─────────────────────── */
+i[data-lucide] {
+  width: 1.1em; height: 1.1em;
+  vertical-align: -0.15em;
+  stroke-width: 2;
+}
+.empty-icon-lucide {
+  width: 3rem; height: 3rem;
+  display: block; margin: 0 auto 16px;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+.style-icon i[data-lucide] {
+  width: 2rem; height: 2rem;
+  stroke: var(--accent-warm);
+}
 #error-overlay {
   position: fixed; inset: 0; z-index: 9999;
   background: rgba(0, 0, 0, 0.85);
@@ -565,7 +603,12 @@ body {
   border-radius: 24px; padding: 32px 28px; max-width: 360px; width: 90%;
   text-align: center; animation: slideUp 0.3s ease;
 }
-.error-icon { font-size: 3rem; margin-bottom: 12px; }
+.error-icon { 
+  stroke: var(--danger);
+  width: 3rem; height: 3rem;
+  margin-bottom: 12px;
+}
+.error-icon i[data-lucide] { width: 3rem; height: 3rem; stroke: var(--danger); }
 .error-dialog h2 { font-size: 1.2rem; margin-bottom: 8px; color: var(--text-primary); }
 .error-msg { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 24px; word-break: break-word; }
 .error-actions { display: flex; gap: 10px; justify-content: center; }

@@ -88,23 +88,28 @@ window.app = {
   // Style Chips
   setupStyleChips() {
     const container = document.getElementById('style-chips');
+    const styleIcons = {
+      mandala: 'circle', botanical: 'leaf', geometric: 'shapes', fantasy: 'sword',
+      zen: 'flower-2', animals: 'paw-print', architecture: 'building-2', abstract: 'orbit',
+      food: 'utensils', space: 'rocket'
+    };
     const styles = [
-      { id: 'mandala', label: '🕉️ Mandala' },
-      { id: 'botanical', label: '🌿 Botanical' },
-      { id: 'geometric', label: '📐 Geometric' },
-      { id: 'fantasy', label: '🐉 Fantasy' },
-      { id: 'zen', label: '🧘 Zen' },
-      { id: 'animals', label: '🐾 Animals' },
-      { id: 'architecture', label: '🏛️ Architecture' },
-      { id: 'abstract', label: '🌀 Abstract' },
-      { id: 'food', label: '🍕 Food' },
-      { id: 'space', label: '🚀 Space' },
+      { id: 'mandala', icon: 'circle', label: 'Mandala' },
+      { id: 'botanical', icon: 'leaf', label: 'Botanical' },
+      { id: 'geometric', icon: 'shapes', label: 'Geometric' },
+      { id: 'fantasy', icon: 'sword', label: 'Fantasy' },
+      { id: 'zen', icon: 'flower-2', label: 'Zen' },
+      { id: 'animals', icon: 'paw-print', label: 'Animals' },
+      { id: 'architecture', icon: 'building-2', label: 'Architecture' },
+      { id: 'abstract', icon: 'orbit', label: 'Abstract' },
+      { id: 'food', icon: 'utensils', label: 'Food' },
+      { id: 'space', icon: 'rocket', label: 'Space' },
     ];
     container.innerHTML = ''; // reset first
     styles.forEach(s => {
       const chip = document.createElement('button');
       chip.className = 'style-chip';
-      chip.textContent = s.label;
+      chip.innerHTML = `<i data-lucide="${s.icon}"></i> ${s.label}`;
       chip.dataset.style = s.id;
       chip.addEventListener('click', () => {
         document.querySelectorAll('#style-chips .style-chip').forEach(c => c.classList.remove('selected'));
@@ -115,6 +120,8 @@ window.app = {
       });
       container.appendChild(chip);
     });
+    // Refresh Lucide for these new icons
+    lucide.createIcons();
     // Default select first
     container.querySelector('.style-chip')?.classList.add('selected');
   },
@@ -137,7 +144,7 @@ window.app = {
     if (window.Studio && window.Studio.triggerHaptic) {
       window.Studio.triggerHaptic();
     }
-    this.toast('Settings saved successfully! 💾');
+    this.toast('Settings saved successfully!');
   },
 
   loadSettings() {
@@ -153,7 +160,7 @@ window.app = {
   async generatePage() {
     const prompt = document.getElementById('prompt-input').value.trim();
     if (!prompt) {
-      this.toast('Please describe what you want to color 🎨');
+      this.toast('Please describe what you want to color');
       return;
     }
     if (!this.isPro && this.generationCount >= this.maxFreeGenerations) {
@@ -178,10 +185,10 @@ window.app = {
 
     // Animated loading messages
     const loadingMessages = [
-      'Sketching your idea... ✏️',
-      'Adding intricate details... 🔍',
-      'Perfecting the outlines... ✨',
-      'Almost ready... 🎨',
+      'Sketching your idea...',
+      'Adding intricate details...',
+      'Perfecting the outlines...',
+      'Almost ready...',
     ];
     let msgIdx = 0;
     statusText.textContent = loadingMessages[0];
@@ -241,28 +248,28 @@ window.app = {
     
     recovery.style.display = 'block';
     recovery.innerHTML = `
-      <h3>⚠️ Generation Issue</h3>
+      <h3>Generation Issue</h3>
       <p>The AI generator failed or timed out. Try one of these recovery methods:</p>
       <div class="recovery-actions-grid">
         <button class="recovery-btn recovery-btn-retry-simple" onclick="app.retryWithSimple()">
-          ⚡ Retry with Simple Complexity (Highly Reliable)
+          Retry with Simple Complexity (Highly Reliable)
         </button>
         <button class="recovery-btn recovery-btn-retry-zen" onclick="app.retryWithZen()">
-          🧘 Switch to Zen Style (Simplifies Details)
+          Switch to Zen Style (Simplifies Details)
         </button>
         <button class="recovery-btn recovery-btn-procedural" onclick="app.retryProcedural()">
-          🎨 Instant Procedural Fallback (Works Offline!)
+          Instant Procedural Fallback (Works Offline!)
         </button>
       </div>
     `;
-    this.toast('Generation failed. Try an option below! 😔');
+    this.toast('Generation failed. Try an option below!');
   },
 
   retryWithSimple() {
     document.getElementById('complexity').value = '1'; // set simple
     const recovery = document.getElementById('generation-recovery');
     if (recovery) recovery.style.display = 'none';
-    this.toast('Retrying with Simple complexity... ⚡');
+    this.toast('Retrying with Simple complexity...');
     this.generatePage();
   },
 
@@ -273,14 +280,14 @@ window.app = {
     });
     const recovery = document.getElementById('generation-recovery');
     if (recovery) recovery.style.display = 'none';
-    this.toast('Retrying with Zen style... 🧘');
+    this.toast('Retrying with Zen style...');
     this.generatePage();
   },
 
   async retryProcedural() {
     const recovery = document.getElementById('generation-recovery');
     if (recovery) recovery.style.display = 'none';
-    this.toast('Invoking instant offline generator... 🎨');
+    this.toast('Invoking instant offline generator...');
     
     // Temporarily bypass replicate Token to force procedural pipeline
     const originalToken = AIPipeline.replicateToken;
@@ -332,9 +339,9 @@ window.app = {
     // Draw a placeholder on challenge canvas
     const canvas = document.getElementById('challenge-canvas');
     const ctx = canvas.getContext('2d');
-    ctx.fillStyle = '#1a1a2e';
+    ctx.fillStyle = '#e8e0d5';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle = '#7c3aed';
+    ctx.strokeStyle = '#1e3a5f';
     ctx.lineWidth = 2;
     // Simple pattern
     for (let i = 0; i < 10; i++) {
@@ -342,8 +349,8 @@ window.app = {
       ctx.arc(canvas.width/2, canvas.height/2, 20 + i * 15, 0, Math.PI * 2);
       ctx.stroke();
     }
-    ctx.fillStyle = '#a78bfa';
-    ctx.font = '14px sans-serif';
+    ctx.fillStyle = '#3d6a99';
+    ctx.font = '14px Georgia, serif';
     ctx.textAlign = 'center';
     ctx.fillText(challenge.title, canvas.width/2, canvas.height/2);
   },
@@ -374,7 +381,7 @@ window.app = {
   saveColored() {
     const dataUrl = Studio.getImageData();
     Gallery.addPage(dataUrl, 'colored', 'Hand-colored');
-    this.toast('Saved to gallery! 📸');
+    this.toast('Saved to gallery!');
   },
 
   // Kids Mode
@@ -396,7 +403,7 @@ window.app = {
     if (KidsMode.validateAnswer()) {
       document.getElementById('screen-kids-gate').classList.remove('active');
       KidsMode.activate();
-      this.toast('Kids Mode activated! 🧒');
+      this.toast('Kids Mode activated!');
     } else {
       this.toast('Wrong answer. Try again.');
     }
@@ -407,7 +414,7 @@ window.app = {
     if (Payments.isPlayStore()) {
       Payments.launchGooglePlayBilling(plan);
     } else {
-      this.toast('Google Play Store coming soon! 🚀');
+      this.toast('Google Play Store coming soon!');
       this.upgradeToPro();
     }
   },
@@ -419,7 +426,7 @@ window.app = {
     document.getElementById('pro-status').textContent = 'Pro';
     document.getElementById('pro-status').classList.add('pro');
     this.updateGenerationCounter();
-    this.toast('You\'re now a Pro member! 🎉');
+    this.toast('You\'re now a Pro member!');
   },
 
   updateGenerationCounter() {
@@ -450,20 +457,21 @@ window.app = {
     }
     setTimeout(() => {
       const styles = [
-        { icon: '🕉️', name: 'Mandala', count: '2.4k pages' },
-        { icon: '🐉', name: 'Fantasy', count: '1.8k pages' },
-        { icon: '🌿', name: 'Botanical', count: '1.5k pages' },
-        { icon: '🌀', name: 'Abstract', count: '1.2k pages' },
-        { icon: '📐', name: 'Geometric', count: '980 pages' },
-        { icon: '🧘', name: 'Zen Garden', count: '820 pages' },
+        { icon: 'circle', name: 'Mandala', count: '2.4k pages' },
+        { icon: 'sword', name: 'Fantasy', count: '1.8k pages' },
+        { icon: 'leaf', name: 'Botanical', count: '1.5k pages' },
+        { icon: 'orbit', name: 'Abstract', count: '1.2k pages' },
+        { icon: 'shapes', name: 'Geometric', count: '980 pages' },
+        { icon: 'flower-2', name: 'Zen Garden', count: '820 pages' },
       ];
       container.innerHTML = styles.map(s => `
         <div class="style-card" onclick="document.getElementById('prompt-input').value='${s.name.toLowerCase()} coloring page'; app.navigate('create')">
-          <div class="style-icon">${s.icon}</div>
+          <div class="style-icon"><i data-lucide="${s.icon}"></i></div>
           <div class="style-name">${s.name}</div>
           <div class="style-count">${s.count}</div>
         </div>
       `).join('');
+      lucide.createIcons();
     }, 400);
   },
 
@@ -537,12 +545,12 @@ window.app = {
         tooltip.className = 'onboarding-tooltip';
         
         tooltip.innerHTML = `
-          <h4>✨ ${config.title}</h4>
+          <h4>${config.title}</h4>
           <p>${config.text}</p>
           <div class="tooltip-arrow ${config.arrowClass}"></div>
           <div class="onboarding-actions">
             <button class="onboarding-btn-skip">Skip</button>
-            <button class="onboarding-btn-next">${currentStep === 3 ? 'Got it! 🎨' : 'Next'}</button>
+            <button class="onboarding-btn-next">${currentStep === 3 ? 'Got it!' : 'Next'}</button>
           </div>
         `;
         
@@ -589,19 +597,20 @@ window.app = {
   // Style Packs
   loadStylePacks() {
     const packs = [
-      { name: 'Mandala Mastery', pages: 50, price: '$3.99', icon: '🕉️' },
-      { name: 'Fantasy Realms', pages: 40, price: '$3.99', icon: '🐉' },
-      { name: 'Zen & Meditation', pages: 35, price: '$2.99', icon: '🧘' },
-      { name: 'Floral Collection', pages: 45, price: '$3.99', icon: '🌺' },
+      { name: 'Mandala Mastery', pages: 50, price: '$3.99', icon: 'circle' },
+      { name: 'Fantasy Realms', pages: 40, price: '$3.99', icon: 'sword' },
+      { name: 'Zen & Meditation', pages: 35, price: '$2.99', icon: 'flower-2' },
+      { name: 'Floral Collection', pages: 45, price: '$3.99', icon: 'leaf' },
     ];
     const container = document.getElementById('style-packs');
     container.innerHTML = packs.map(p => `
       <div class="style-card" onclick="app.purchase('pack_${p.name.toLowerCase().replace(/ /g,'_')}')">
-        <div class="style-icon">${p.icon}</div>
+        <div class="style-icon"><i data-lucide="${p.icon}"></i></div>
         <div class="style-name">${p.name}</div>
         <div class="style-count">${p.pages} pages · ${p.price}</div>
       </div>
     `).join('');
+    lucide.createIcons();
   },
 
   // Utilities

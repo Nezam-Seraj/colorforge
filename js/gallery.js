@@ -55,7 +55,7 @@ window.Gallery = {
     if (pages.length === 0) {
       grid.innerHTML = `
         <div class="empty-state">
-          <span class="empty-icon">🎨</span>
+          <span class="empty-icon"><i data-lucide="palette" class="empty-icon-lucide"></i></span>
           <h3>No pages yet</h3>
           <p>Create your first coloring page or color the daily challenge!</p>
           <button class="btn-primary" onclick="app.navigate('create')">Create One Now</button>

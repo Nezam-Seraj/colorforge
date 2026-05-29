@@ -3,33 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-<meta name="theme-color" content="#1a1a2e">
+<meta name="theme-color" content="#faf6f0">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="ColorForge">
 <link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" href="/assets/icon-192.png">
 <link rel="stylesheet" href="/style.css">
+<script src="https://cdn.jsdelivr.net/npm/lucide@latest"></script>
 <title>ColorForge — AI Coloring Studio</title>
 </head>
 <body>
 <div id="app">
-  <!-- Navigation -->
   <nav id="navbar">
-    <div class="nav-brand">🎨 ColorForge</div>
+    <div class="nav-brand"><i data-lucide="palette"></i> ColorForge</div>
     <div class="nav-tabs">
-      <button class="nav-tab active" data-screen="discover">✨ Discover</button>
-      <button class="nav-tab" data-screen="create">🤖 Create</button>
-      <button class="nav-tab" data-screen="gallery">🖼️ Gallery</button>
-      <button class="nav-tab" data-screen="community">👥 Community</button>
-      <button class="nav-tab nav-premium" data-screen="pro">⭐ Pro</button>
-      <button class="nav-tab" data-screen="settings">⚙️ Settings</button>
+      <button class="nav-tab active" data-screen="discover"><i data-lucide="compass"></i> Discover</button>
+      <button class="nav-tab" data-screen="create"><i data-lucide="sparkles"></i> Create</button>
+      <button class="nav-tab" data-screen="gallery"><i data-lucide="images"></i> Gallery</button>
+      <button class="nav-tab" data-screen="community"><i data-lucide="users"></i> Community</button>
+      <button class="nav-tab nav-premium" data-screen="pro"><i data-lucide="crown"></i> Pro</button>
+      <button class="nav-tab" data-screen="settings"><i data-lucide="settings"></i> Settings</button>
     </div>
   </nav>
 
-  <!-- Screens -->
   <main id="screens">
-    <!-- Discover Screen -->
     <section id="screen-discover" class="screen active">
       <div class="discover-hero">
         <h1>Describe it. <span class="gradient-text">AI draws it.</span> You color it.</h1>
@@ -37,42 +35,35 @@
         <div class="mood-picker">
           <span class="mood-label">How are you feeling?</span>
           <div class="mood-chips">
-            <button class="mood-chip" data-mood="stressed">😰 Stressed</button>
-            <button class="mood-chip" data-mood="anxious">😟 Anxious</button>
-            <button class="mood-chip" data-mood="bored">😴 Bored</button>
-            <button class="mood-chip" data-mood="creative">🎨 Creative</button>
-            <button class="mood-chip" data-mood="meditative">🧘 Meditative</button>
+            <button class="mood-chip" data-mood="stressed"><i data-lucide="wind"></i> Stressed</button>
+            <button class="mood-chip" data-mood="anxious"><i data-lucide="cloud-rain"></i> Anxious</button>
+            <button class="mood-chip" data-mood="bored"><i data-lucide="coffee"></i> Bored</button>
+            <button class="mood-chip" data-mood="creative"><i data-lucide="palette"></i> Creative</button>
+            <button class="mood-chip" data-mood="meditative"><i data-lucide="flower-2"></i> Meditative</button>
           </div>
         </div>
       </div>
 
       <div class="section-header">
-        <h2>🔥 Daily Challenge</h2>
+        <h2><i data-lucide="flame"></i> Daily Challenge</h2>
         <span class="badge">New every day</span>
       </div>
       <div id="daily-challenge" class="challenge-card">
-        <div class="challenge-preview">
-          <canvas id="challenge-canvas" width="300" height="400"></canvas>
-        </div>
+        <div class="challenge-preview"><canvas id="challenge-canvas" width="300" height="400"></canvas></div>
         <div class="challenge-info">
           <h3 id="challenge-title">Loading...</h3>
           <p id="challenge-desc"></p>
-          <button class="btn-primary" onclick="app.startDailyChallenge()">Color This ✏️</button>
+          <button class="btn-primary" onclick="app.startDailyChallenge()"><i data-lucide="pencil"></i> Color This</button>
         </div>
       </div>
 
-      <div class="section-header">
-        <h2>🌟 Trending Styles</h2>
-      </div>
+      <div class="section-header"><h2><i data-lucide="trending-up"></i> Trending Styles</h2></div>
       <div class="style-grid" id="trending-styles"></div>
 
-      <div class="section-header">
-        <h2>📚 Style Packs</h2>
-      </div>
+      <div class="section-header"><h2><i data-lucide="package"></i> Style Packs</h2></div>
       <div class="pack-grid" id="style-packs"></div>
     </section>
 
-    <!-- Create Screen -->
     <section id="screen-create" class="screen">
       <div class="create-container">
         <h2>Create Your Coloring Page</h2>
@@ -94,16 +85,12 @@
             <label>Complexity</label>
             <div class="complexity-slider">
               <input type="range" id="complexity" min="1" max="3" value="2" step="1">
-              <div class="complexity-labels">
-                <span>Simple</span>
-                <span>Medium</span>
-                <span>Intricate</span>
-              </div>
+              <div class="complexity-labels"><span>Simple</span><span>Medium</span><span>Intricate</span></div>
             </div>
           </div>
 
           <button class="btn-generate" id="btn-generate" onclick="app.generatePage()">
-            <span class="btn-icon">🤖</span> Generate Coloring Page
+            <i data-lucide="sparkles"></i> Generate Coloring Page
           </button>
 
           <div class="generation-status" id="gen-status" style="display:none">
@@ -114,16 +101,15 @@
           <div class="generation-result" id="gen-result" style="display:none">
             <canvas id="gen-preview" width="400" height="533"></canvas>
             <div class="gen-actions">
-              <button class="btn-primary" onclick="app.colorGenerated()">🎨 Start Coloring</button>
-              <button class="btn-secondary" onclick="app.regenerate()">🔄 Try Again</button>
-              <button class="btn-secondary" onclick="app.saveToGallery()">💾 Save for Later</button>
+              <button class="btn-primary" onclick="app.colorGenerated()"><i data-lucide="paintbrush"></i> Start Coloring</button>
+              <button class="btn-secondary" onclick="app.regenerate()"><i data-lucide="refresh-cw"></i> Try Again</button>
+              <button class="btn-secondary" onclick="app.saveToGallery()"><i data-lucide="download"></i> Save for Later</button>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Gallery Screen -->
     <section id="screen-gallery" class="screen">
       <h2>Your Gallery</h2>
       <div class="gallery-controls">
@@ -137,7 +123,7 @@
       </div>
       <div class="gallery-grid" id="gallery-grid">
         <div class="empty-state">
-          <span class="empty-icon">🎨</span>
+          <i data-lucide="palette" class="empty-icon-lucide"></i>
           <h3>No pages yet</h3>
           <p>Create your first coloring page or color the daily challenge!</p>
           <button class="btn-primary" onclick="app.navigate('create')">Create One Now</button>
@@ -145,65 +131,47 @@
       </div>
     </section>
 
-    <!-- Community Screen -->
     <section id="screen-community" class="screen">
       <h2>Community Creations</h2>
       <p class="subtitle">See how others colored the same pages</p>
       <div class="community-grid" id="community-grid">
         <div class="empty-state">
-          <span class="empty-icon">👥</span>
+          <i data-lucide="users" class="empty-icon-lucide"></i>
           <h3>Coming Soon</h3>
           <p>Community features launching shortly. Share your creations and discover others!</p>
         </div>
       </div>
     </section>
 
-    <!-- Pro Screen -->
     <section id="screen-pro" class="screen">
       <div class="pro-container">
         <h2>Unlock Your Creativity</h2>
         <p class="pro-subtitle">Get unlimited access to everything ColorForge has to offer.</p>
-
         <div class="pro-plans">
           <div class="pro-card free">
             <h3>Free</h3>
             <div class="pro-price">$0</div>
             <ul>
-              <li>✅ 3 generations/day</li>
-              <li>✅ 24 colors</li>
-              <li>✅ Basic tools</li>
-              <li>✅ Save 10 pages</li>
-              <li>✅ Daily challenge</li>
+              <li>3 generations/day</li><li>24 colors</li><li>Basic tools</li><li>Save 10 pages</li><li>Daily challenge</li>
             </ul>
             <button class="btn-outline">Current Plan</button>
           </div>
-
           <div class="pro-card featured">
             <div class="pro-badge">MOST POPULAR</div>
             <h3>Pro Monthly</h3>
             <div class="pro-price">$9.99<span>/mo</span></div>
             <ul>
-              <li>✅ Unlimited generations</li>
-              <li>✅ 48+ colors + gradients</li>
-              <li>✅ Layers + blending</li>
-              <li>✅ Unlimited saves</li>
-              <li>✅ Export PNG/PDF</li>
-              <li>✅ No ads</li>
-              <li>✅ Priority generation</li>
+              <li>Unlimited generations</li><li>48+ colors + gradients</li><li>Layers + blending</li>
+              <li>Unlimited saves</li><li>Export PNG/PDF</li><li>No ads</li><li>Priority generation</li>
             </ul>
             <button class="btn-primary" onclick="app.purchase('pro_monthly')">Get Pro — $9.99/mo</button>
           </div>
-
           <div class="pro-card">
             <h3>Lifetime</h3>
             <div class="pro-price">$49.99<span>/forever</span></div>
             <ul>
-              <li>✅ Everything in Pro</li>
-              <li>✅ All future features</li>
-              <li>✅ Style pack library</li>
-              <li>✅ Print shop access</li>
-              <li>✅ Early access to new tools</li>
-              <li>✅ Lifetime updates</li>
+              <li>Everything in Pro</li><li>All future features</li><li>Style pack library</li>
+              <li>Print shop access</li><li>Early access to new tools</li><li>Lifetime updates</li>
             </ul>
             <button class="btn-primary" onclick="app.purchase('lifetime')">Get Lifetime — $49.99</button>
           </div>
@@ -211,10 +179,9 @@
       </div>
     </section>
 
-    <!-- Settings Screen -->
     <section id="screen-settings" class="screen">
       <div class="create-container">
-        <h2>⚙️ Settings</h2>
+        <h2><i data-lucide="settings"></i> Settings</h2>
         <div class="create-form">
           <div class="input-group">
             <label for="replicate-api-input">Replicate API Token</label>
@@ -223,61 +190,50 @@
             </div>
             <p class="subtitle" style="font-size: 0.75rem; margin-top: 6px; margin-bottom: 0;">Required for high-definition SDXL generating. Persisted locally.</p>
           </div>
-
-          <button class="btn-primary" id="btn-save-settings" onclick="app.saveSettings()">
-            💾 Save Settings
-          </button>
-
+          <button class="btn-primary" id="btn-save-settings" onclick="app.saveSettings()"><i data-lucide="save"></i> Save Settings</button>
           <hr style="border: 0; border-top: 1px solid var(--border); margin: 10px 0;">
-
           <div class="input-group">
             <label>Parental Controls & Modes</label>
-            <button class="btn-secondary" id="btn-toggle-kids" onclick="app.toggleKidsGate()" style="width:100%;">
-              🧒 Toggle Kids Mode
-            </button>
+            <button class="btn-secondary" id="btn-toggle-kids" onclick="app.toggleKidsGate()" style="width:100%;"><i data-lucide="smile"></i> Toggle Kids Mode</button>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Color Studio (overlay) -->
     <section id="screen-studio" class="screen overlay">
       <div class="studio-toolbar">
-        <button class="tool-btn" onclick="app.closeStudio()">← Back</button>
+        <button class="tool-btn" onclick="app.closeStudio()"><i data-lucide="arrow-left"></i> Back</button>
         <span class="studio-title" id="studio-title">Coloring...</span>
         <div class="studio-actions">
-          <button class="tool-btn" id="btn-undo" onclick="studio.undo()" disabled>↩ Undo</button>
-          <button class="tool-btn" id="btn-redo" onclick="studio.redo()" disabled>↪ Redo</button>
-          <button class="tool-btn" onclick="studio.zoomIn()">🔍+</button>
-          <button class="tool-btn" onclick="studio.zoomOut()">🔍-</button>
-          <button class="tool-btn" onclick="studio.zoomFit()">⊞ Fit</button>
-          <button class="tool-btn" id="btn-fill" onclick="studio.setTool('fill')">🪣 Fill</button>
-          <button class="tool-btn" id="btn-global" onclick="studio.toggleGlobalFill()">🌐 Global: Off</button>
-          <button class="tool-btn" id="btn-brush" onclick="studio.setTool('brush')">🖌️ Brush</button>
-          <button class="tool-btn" id="btn-spray" onclick="studio.setTool('spray')">💨 Spray</button>
-          <button class="tool-btn" id="btn-eraser" onclick="studio.setTool('eraser')">🧹 Eraser</button>
-          <button class="tool-btn" onclick="app.saveColored()">💾 Save</button>
-          <button class="tool-btn" onclick="studio.exportPNG()">📤 Export</button>
+          <button class="tool-btn" id="btn-undo" onclick="studio.undo()" disabled><i data-lucide="undo-2"></i></button>
+          <button class="tool-btn" id="btn-redo" onclick="studio.redo()" disabled><i data-lucide="redo-2"></i></button>
+          <button class="tool-btn" onclick="studio.zoomIn()"><i data-lucide="zoom-in"></i></button>
+          <button class="tool-btn" onclick="studio.zoomOut()"><i data-lucide="zoom-out"></i></button>
+          <button class="tool-btn" onclick="studio.zoomFit()"><i data-lucide="maximize"></i></button>
+          <button class="tool-btn" id="btn-fill" onclick="studio.setTool('fill')"><i data-lucide="paint-bucket"></i> Fill</button>
+          <button class="tool-btn" id="btn-global" onclick="studio.toggleGlobalFill()"><i data-lucide="globe"></i> Global</button>
+          <button class="tool-btn active" id="btn-brush" onclick="studio.setTool('brush')"><i data-lucide="brush"></i> Brush</button>
+          <button class="tool-btn" id="btn-spray" onclick="studio.setTool('spray')"><i data-lucide="spray-can"></i> Spray</button>
+          <button class="tool-btn" id="btn-eraser" onclick="studio.setTool('eraser')"><i data-lucide="eraser"></i> Eraser</button>
+          <button class="tool-btn" onclick="app.saveColored()"><i data-lucide="save"></i></button>
+          <button class="tool-btn" onclick="studio.exportPNG()"><i data-lucide="share-2"></i></button>
         </div>
       </div>
-      <div class="studio-workspace">
-        <canvas id="studio-canvas"></canvas>
-      </div>
+      <div class="studio-workspace"><canvas id="studio-canvas"></canvas></div>
       <div class="studio-palette">
         <div class="palette-row" id="palette-colors"></div>
         <div class="palette-controls">
           <input type="color" id="custom-color" value="#ff6b6b">
-          <button class="tool-btn" onclick="studio.pickColor()">💉 Eyedropper</button>
+          <button class="tool-btn" onclick="studio.pickColor()"><i data-lucide="pipette"></i> Pick</button>
           <span class="brush-size-label">Brush:</span>
           <input type="range" id="brush-size" min="1" max="40" value="8">
         </div>
       </div>
     </section>
 
-    <!-- Kids Mode Gate (hidden) -->
     <section id="screen-kids-gate" class="screen overlay" style="display:none">
       <div class="gate-container">
-        <h2>🧒 Kids Mode</h2>
+        <h2><i data-lucide="smile"></i> Kids Mode</h2>
         <p>Parents: answer this to unlock kids mode.</p>
         <div class="gate-question" id="gate-question"></div>
         <input type="number" id="gate-answer" placeholder="Your answer">
@@ -287,14 +243,9 @@
     </section>
   </main>
 
-  <!-- Bottom bar -->
   <footer id="bottombar">
-    <div class="gen-counter">
-      <span id="gen-count">0/3</span> generations today
-    </div>
-    <button class="kids-toggle" id="kids-toggle" onclick="app.toggleKidsGate()" style="display:none">
-      👶 Kids Mode
-    </button>
+    <div class="gen-counter"><span id="gen-count">0/3</span> generations today</div>
+    <button class="kids-toggle" id="kids-toggle" onclick="app.toggleKidsGate()" style="display:none"><i data-lucide="baby"></i> Kids Mode</button>
     <div class="pro-status" id="pro-status">Free</div>
   </footer>
 </div>
@@ -307,5 +258,11 @@
 <script type="module" src="/js/discover.js"></script>
 <script type="module" src="/js/payments.js"></script>
 <script type="module" src="/js/kids-mode.js"></script>
+<script defer>
+  // Initialize Lucide on page load and after any DOM mutations
+  lucide.createIcons();
+  // Watch for dynamic content
+  new MutationObserver(() => lucide.createIcons()).observe(document.body, {childList:true,subtree:true});
+</script>
 </body>
 </html>
